@@ -1,11 +1,11 @@
 .PHONY: setup docker
 
-IMAGE_NAME:=compilerbook
+IMAGE_NAME:=u110/compilerbook
 
 setup: docker
 
 docker:
-	docker build -t $(IMAGE_NAME) https://www.sigbus.info/compilerbook/Dockerfile
+	docker build . -t $(IMAGE_NAME)
 
 d/%:
 	docker run --rm -it \
@@ -13,3 +13,6 @@ d/%:
 		-w /work \
 		$(IMAGE_NAME) \
 			$(@F)
+
+test:
+	$(MAKE) -C 9cc test-all
