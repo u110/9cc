@@ -13,7 +13,7 @@ bash:
 			bash
 
 d/%:
-	docker run --rm \
+	docker run --rm -u root\
 		-v $(PWD):/work \
 		-w /work \
 		$(IMAGE_NAME) \
