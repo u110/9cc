@@ -1,6 +1,6 @@
 .PHONY: setup docker
 
-IMAGE_NAME:=compilerbook
+IMAGE_NAME:=u110/compilerbook
 
 setup: docker
 

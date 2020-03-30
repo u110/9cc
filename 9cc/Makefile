@@ -1,12 +1,19 @@
 .PHONY: test clean
 
 CFLAGS=-std=c11 -g -static
-IMAGE_NAME:=compilerbook
+IMAGE_NAME:=u110/compilerbook
 
 all: bash
 
-d/%:
+bash:
 	docker run --rm -it \
+		-v $(PWD):/work \
+		-w /work \
+		$(IMAGE_NAME) \
+			bash
+
+d/%:
+	docker run --rm \
 		-v $(PWD):/work \
 		-w /work \
 		$(IMAGE_NAME) \
@@ -14,13 +21,12 @@ d/%:
 
 test-all: d/make\ test
 
-bash: d/bash
-
 9cc: 9cc.c
-
-test: 9cc
-	./test.sh
 
 clean:
 	rm -f 9cc *.o *~ tmp*
+
+test: clean 9cc
+	./test.sh
+
 
