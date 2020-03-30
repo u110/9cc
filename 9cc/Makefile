@@ -14,7 +14,7 @@ bash:
 
 d/%:
 	docker run --rm -u root\
-		-v $(PWD):/work \
+		-v $(CURDIR):/work \
 		-w /work \
 		$(IMAGE_NAME) \
 			$(@F)
