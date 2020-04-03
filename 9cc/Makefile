@@ -29,4 +29,5 @@ clean:
 test: clean 9cc
 	./test.sh
 
-
+step2: 9cc
+	./9cc '5+20-4'
