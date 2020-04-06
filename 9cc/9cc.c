@@ -25,12 +25,17 @@ struct Token {
 // 現在着目しているトークン
 Token *token;
 
+char *user_input;
 
-// Error function
-// same parameters as `printf` function
-void error(char *fmt, ...) {
+// error with position
+void error_at(char *loc, char *fmt, ...) {
   va_list ap;
   va_start(ap, fmt);
+
+  int pos = loc - user_input;
+  fprintf(stderr, "%s\n", user_input);
+  fprintf(stderr, "%*s", pos, ""); // space * pos count
+  fprintf(stderr, "^ ");
   vfprintf(stderr, fmt, ap);
   fprintf(stderr, "\n");
   exit(1);
@@ -49,7 +54,7 @@ bool consume(char op) {
 // Otherwise, return error.
 void expect(char op) {
   if (token->kind != TK_RESERVED || token->str[0] != op)
-    error("'%c'ではありません", op);
+    error_at(token->str, "'%c'ではありません", op);
   token = token->next;
 }
 
@@ -57,7 +62,7 @@ void expect(char op) {
 // Otherwise, retuen error.
 int expect_number() {
   if (token->kind != TK_NUM)
-    error("数ではありません");
+    error_at(token->str, "数ではありません");
   int val = token->val;
   token = token->next;
   return val;
@@ -100,7 +105,7 @@ Token *tokenize(char *p) {
       continue;
     }
 
-    error("トークナイズできません");
+    error_at(p, "トークナイズできません");
   }
 
   new_token(TK_EOF, cur, p);
@@ -114,7 +119,8 @@ int main(int argc, char **argv) {
   }
 
   // tokenize
-  token = tokenize(argv[1]);
+  user_input = argv[1];
+  token = tokenize(user_input);
 
   printf(".intel_syntax noprefix\n");
   printf(".global main\n");
